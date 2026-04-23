@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.Python
+venv/
+.venv/
+env/
+
+# Environment / Secrets
+.env
+.env.*
+*.env
+
+# Database files (SQLite)
+*.db
+*.sqlite
+*.sqlite3
+data/*.db
+
+# Logs
+*.log
+logs/
+
+# Coverage / Test artifacts
+.coverage
+.pytest_cache/
+htmlcov/
+
+# Node / Dashboard
+dashboard/node_modules/
+dashboard/dist/
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Docker volumes
+data/

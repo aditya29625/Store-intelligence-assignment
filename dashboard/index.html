@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Apex Retail Store Intelligence — real-time offline analytics dashboard" />
+  <title>Apex Retail — Store Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="src/style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo">
+          <div class="logo-icon">▲</div>
+          <div>
+            <div class="logo-title">Apex Retail</div>
+            <div class="logo-sub">Store Intelligence Platform</div>
+          </div>
+        </div>
+      </div>
+      <div class="header-center">
+        <select id="store-select" class="store-select">
+          <option value="STORE_BLR_001">Bangalore Store 1</option>
+          <option value="STORE_BLR_002" selected>Bangalore Store 2</option>
+          <option value="STORE_MUM_001">Mumbai Store 1</option>
+          <option value="STORE_DEL_001">Delhi Store 1</option>
+          <option value="STORE_HYD_001">Hyderabad Store 1</option>
+        </select>
+      </div>
+      <div class="header-right">
+        <div class="live-badge" id="live-badge">
+          <span class="live-dot"></span>
+          <span id="live-label">CONNECTING</span>
+        </div>
+        <div class="event-counter" id="event-counter">0 events</div>
+        <div class="clock" id="clock"></div>
+      </div>
+    </header>
+
+    <!-- KPI Strip -->
+    <div class="kpi-strip">
+      <div class="kpi-card" id="kpi-visitors">
+        <div class="kpi-icon">👥</div>
+        <div class="kpi-content">
+          <div class="kpi-value" id="val-visitors">—</div>
+          <div class="kpi-label">Unique Visitors</div>
+          <div class="kpi-trend" id="trend-visitors"></div>
+        </div>
+      </div>
+      <div class="kpi-card" id="kpi-conversion">
+        <div class="kpi-icon">💳</div>
+        <div class="kpi-content">
+          <div class="kpi-value" id="val-conversion">—</div>
+          <div class="kpi-label">Conversion Rate</div>
+          <div class="kpi-trend" id="trend-conversion"></div>
+        </div>
+      </div>
+      <div class="kpi-card" id="kpi-queue">
+        <div class="kpi-icon">🔢</div>
+        <div class="kpi-content">
+          <div class="kpi-value" id="val-queue">—</div>
+          <div class="kpi-label">Queue Depth</div>
+          <div class="kpi-trend" id="trend-queue"></div>
+        </div>
+      </div>
+      <div class="kpi-card" id="kpi-abandon">
+        <div class="kpi-icon">🚶</div>
+        <div class="kpi-content">
+          <div class="kpi-value" id="val-abandon">—</div>
+          <div class="kpi-label">Abandonment Rate</div>
+          <div class="kpi-trend" id="trend-abandon"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div class="main-grid">
+
+      <!-- Funnel -->
+      <div class="card funnel-card">
+        <div class="card-header">
+          <h2 class="card-title">Conversion Funnel</h2>
+          <span class="card-badge">Today</span>
+        </div>
+        <div class="funnel-container">
+          <div class="funnel-stage" id="funnel-entry">
+            <div class="funnel-bar-wrap">
+              <div class="funnel-bar" id="funnel-bar-entry" style="width:100%"></div>
+            </div>
+            <div class="funnel-meta">
+              <span class="funnel-label">Entry</span>
+              <span class="funnel-count" id="funnel-count-entry">—</span>
+            </div>
+            <div class="funnel-drop" id="funnel-drop-entry"></div>
+          </div>
+          <div class="funnel-stage" id="funnel-zone">
+            <div class="funnel-bar-wrap">
+              <div class="funnel-bar" id="funnel-bar-zone" style="width:80%"></div>
+            </div>
+            <div class="funnel-meta">
+              <span class="funnel-label">Zone Visit</span>
+              <span class="funnel-count" id="funnel-count-zone">—</span>
+            </div>
+            <div class="funnel-drop" id="funnel-drop-zone"></div>
+          </div>
+          <div class="funnel-stage" id="funnel-billing">
+            <div class="funnel-bar-wrap">
+              <div class="funnel-bar" id="funnel-bar-billing" style="width:50%"></div>
+            </div>
+            <div class="funnel-meta">
+              <span class="funnel-label">Billing Queue</span>
+              <span class="funnel-count" id="funnel-count-billing">—</span>
+            </div>
+            <div class="funnel-drop" id="funnel-drop-billing"></div>
+          </div>
+          <div class="funnel-stage" id="funnel-purchase">
+            <div class="funnel-bar-wrap">
+              <div class="funnel-bar funnel-bar-success" id="funnel-bar-purchase" style="width:35%"></div>
+            </div>
+            <div class="funnel-meta">
+              <span class="funnel-label">Purchase</span>
+              <span class="funnel-count" id="funnel-count-purchase">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Heatmap -->
+      <div class="card heatmap-card">
+        <div class="card-header">
+          <h2 class="card-title">Zone Heatmap</h2>
+          <span class="card-badge" id="heatmap-confidence">—</span>
+        </div>
+        <div class="heatmap-grid" id="heatmap-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Live Event Feed -->
+      <div class="card feed-card">
+        <div class="card-header">
+          <h2 class="card-title">Live Event Feed</h2>
+          <span class="card-badge" id="feed-count">0</span>
+        </div>
+        <div class="event-feed" id="event-feed">
+          <div class="feed-empty">Waiting for events...</div>
+        </div>
+      </div>
+
+      <!-- Anomalies -->
+      <div class="card anomaly-card">
+        <div class="card-header">
+          <h2 class="card-title">Active Anomalies</h2>
+          <span class="card-badge anomaly-badge" id="anomaly-count">0</span>
+        </div>
+        <div class="anomaly-list" id="anomaly-list">
+          <div class="feed-empty">All systems nominal ✓</div>
+        </div>
+      </div>
+
+      <!-- Visitor Timeline Chart -->
+      <div class="card chart-card">
+        <div class="card-header">
+          <h2 class="card-title">Visitor Flow (Today)</h2>
+          <div class="chart-legend">
+            <span class="legend-dot entry-dot"></span>Entries
+            <span class="legend-dot exit-dot"></span>Exits
+          </div>
+        </div>
+        <canvas id="visitor-chart" height="120"></canvas>
+      </div>
+
+      <!-- Store Health -->
+      <div class="card health-card">
+        <div class="card-header">
+          <h2 class="card-title">Store Health</h2>
+        </div>
+        <div id="health-list" class="health-list"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="src/dashboard.js"></script>
+</body>
+</html>
